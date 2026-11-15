@@ -1084,6 +1084,9 @@ html.dopen,html.dopen body{overflow:hidden}
     const nu = { id: ++ROOT.n, company_id: cid, email: r.email, name: r.name, position: 'Директор', role: 'director', pass: r.pass, status: 'active', perms: {}, platform: !!platform, last_seen: 0, created_at: now() };
     ROOT.users.push(nu); return nu;
   }
+  // учётная запись администратора для входа в демо-версию
+  const DEMO_ADMIN = { email: 'admin@orbita.test', pass: 'OrbitaStart2026' };
+  if (!ROOT.users.some(x => x.email === DEMO_ADMIN.email)) { createCompany({ company: 'Аляви', inn: '', name: 'Анна', email: DEMO_ADMIN.email, pass: DEMO_ADMIN.pass }, true); try { localStorage.setItem(KEY, JSON.stringify(ROOT)); } catch {} }
   const reqOut = r => ({ id: r.id, company: r.company, inn: r.inn, name: r.name, phone: r.phone, email: r.email, status: r.status, created_at: r.created_at, plan: r.plan, amount: r.amount, pay_status: r.pay_status || 'none', files: r.files.map(f => ({ name: f.name, size: f.size, url: 'data:' + (f.type || 'application/octet-stream') + ';base64,' + f.data })) });
   const CU = () => ROOT.users.filter(x => x.company_id === CUR_C);
   const logEvent = (deal_id, type, text, user_id) => S.events.push({ id: ++ROOT.n, deal_id, type, text: String(text || ''), user_id, created_at: now() });
